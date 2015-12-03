@@ -1,26 +1,26 @@
 {
-  "name": "UberBackend",
+  "name": "UberAPI",
   "version": "1.0.0",
-  "main": "server/server.js",
+  "description": "UberAPI",
+  "main": "server.js",
   "scripts": {
-    "start": "node .",
-    "pretest": "jshint ."
-  },
-  "dependencies": {
-    "compression": "^1.0.3",
-    "cors": "^2.5.2",
-    "loopback": "^2.22.0",
-    "loopback-boot": "^2.6.5",
-    "loopback-component-explorer": "^2.1.0",
-    "loopback-datasource-juggler": "^2.39.0",
-    "serve-favicon": "^2.0.1"
-  },
-  "devDependencies": {
-    "jshint": "^2.5.6"
+    "test": "mocha",
+    "test-coverage": "npm test && istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
+    "install-local": "npm install -g mocha & npm install -g node-inspector & npm install",
+    "start": "node server.js 1 prod 127.0.0.1 3000 9000",
+    "debug": "node-debug server.js 0 dev 127.0.0.1 3000 9000"
   },
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "git@github.com:UberProjects/UberBackend.git"
   },
-  "description": "UberBackend"
+  "keywords": [
+    "none"
+  ],
+  "author": "UberCUTeam",
+  "license": "",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
 }
