@@ -33,11 +33,11 @@ and must follow the existing format. See user.route.config.json for an example
 general route definition is:
 ```json
 {
-    "route":"", //http route to be called from cordova
-    "method":"", //standard http methods i.e get, put, ect
-    "action":"", //the method to be called from the controller**
-    "auth":"", //true or false value specifies if passport auth is needed
-    "controller":""//realtive path to controller
+    "route":"http route to be called from cordova", 
+    "method":"standard http methods i.e get, put, ect", 
+    "action":"the method to be called from the controller**", 
+    "auth":"true or false value specifies if passport auth is needed",
+    "controller":"realtive path to controller"
 }
 ```
 **Controllers must be defined using a certain pattern for routes 
@@ -48,11 +48,11 @@ Used to define passport strategies i.e google login, git login, ect
 see [Passportjs](http://passportjs.org) for more info
 
 ###Additional config files 
-env-config: combines needed configuration vars based on NODE_ENV
-init.js: called on start up to ensure proper NODE_ENV setting (defaults to dev)
-passport.js: loads all strategies defined in config/strategies
-express-config.js: sets express server settings see [Express](http://expressjs.com) for more info
-route-config.js: loads routes defined in routs folder
+  - env-config: combines needed configuration vars based on NODE_ENV
+  - init.js: called on start up to ensure proper NODE_ENV setting (defaults to dev)
+  - passport.js: loads all strategies defined in config/strategies
+  - express-config.js: sets express server settings see [Express](http://expressjs.com) for more info
+  - route-config.js: loads routes defined in routs folder
 
 ##Controllers
 Contains business logic for application 
