@@ -1,0 +1,79 @@
+{
+  "routes": [
+    {
+      "route": "/v1/auth/signup",
+      "method": "POST",
+      "action": "signup",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/auth/signin",
+      "method": "POST",
+      "action": "signin",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/auth/signout",
+      "method": "GET",
+      "action": "signout",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/users/me",
+      "method": "GET",
+      "action": "me",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/users",
+      "method": "PUT",
+      "action": "update",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/users/accounts",
+      "method": "DELETE",
+      "action": "removeOAuthProvider",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/users/password",
+      "method": "POST",
+      "action": "changePassword",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/auth/forgot",
+      "method": "POST",
+      "action": "forgot",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/auth/reset/:token",
+      "method": "GET",
+      "action": "validateResetToken",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "route": "/v1/auth/reset/:token",
+      "method": "POST",
+      "action": "reset",
+      "auth": "false",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
+      "post_setup":"true",
+      "method":"postSetup",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    }
+  ]
+}

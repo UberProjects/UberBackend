@@ -1,11 +1,16 @@
-var settingsConfig = require('./app/config/settings/settings-config');
+var init = require('./app/config/init')(),
+    settingsConfig = require('./app/config/env-config'),
+    config = require('./app/config/env-config'),
+    mongoose = require('mongoose');
 
-if(settingsConfig.settings.clusterEnabled === 1) {
-  require('cluster-service').start({ workers: './app/config/worker-config.js',
-    accessKey: settingsConfig.settings.clusterAccessKey,
-    host: settingsConfig.settings.hostName,
-    port: settingsConfig.settings.masterPort });
-}
-else {
-  require('./app/config/worker-config.js');
-}
+
+//Connect to db
+var db = mongoose.connect(config.db, {}, function (err) {
+  if (err) {
+    console.error(chalk.red('Could not connect to MongoDb'));
+    console.log(chalk.red(err));
+  }
+});
+
+require('./app/config/express-config.js')(db);
+

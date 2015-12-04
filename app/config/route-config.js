@@ -1,40 +1,46 @@
-var settingsConfig = require('./settings/settings-config');
+var config = require('./env-config');
+var utils = require('../utils/utils');
+var path = require('path');
+var passport = require('passport');
 
 function RouteConfig() {
+
 }
 
 function registerRoutes(application) {
-  var config = loadRouteConfig();
+  var config;
+  utils.getGlobbedFiles('./routes/**/*.json').forEach(function (routeInfo) {
 
-  for(var i = 0, length = config.routes.length; i < length; i++) {
-    var routeItem = config.routes[i];
+    config = require(path.resolve(routeInfo));
 
-    var controller = loadController(routeItem);
-    var route = getRoute(routeItem);
-    var method = getMethod(routeItem);
-    var action = getAction(routeItem);
+    if (!config.routes || config.routes.length === 0){
 
-    registerRoute(application, controller, route, method, action);
-  }
+      console.error('No routes defined for: ' + routeInfo);
+
+    }else{
+
+      for(var i = 0, length = config.routes.length; i < length; i++) {
+        var routeItem = config.routes[i];
+
+        var controller = loadController(routeItem);
+        var postItem = getIsPost(routeItem);
+        var method = getMethod(routeItem);
+
+        if(!postItem){
+          var route = getRoute(routeItem);
+          var action = getAction(routeItem);
+          var authRequired = getAuth(routeItem);
+          registerRoute(application, controller, route, method, action, authRequired);
+        }else{
+          controller[method](application);
+        }
+      }
+
+    }
+
+  });
 
   createConfigRoute(application);
-}
-
-function loadRouteConfig() {
-  var config;
-
-  try {
-    config = require('./route.config.json');
-
-    if(!config.routes || config.routes.length === 0) {
-      throw '"routes" not defined';
-    }
-  }
-  catch(e) {
-    throw 'Unable to parse "lib/config/route.config.json": ' + e;
-  }
-
-  return config;
 }
 
 function loadController(routeItem) {
@@ -88,16 +94,30 @@ function getAction(routeItem) {
   return routeItem.action;
 }
 
+function getAuth(routeItem){
+  return !!(routeItem && routeItem.auth && routeItem.auth === "true");
+}
 
-function registerRoute(application, controller, route, method, action) {
-  application.route(route)[method](function(req, res, next) {
-    controller[action](req, res, next);
-  });
+function getIsPost(routeItem){
+  return !!(routeItem && routeItem.auth && routeItem.post_setup=== "true");
+}
+
+function registerRoute(application, controller, route, method, action, authRequired) {
+  if(authRequired){
+     application.route(route)[method](passport.authenticate('session'), function (req, res, next) {
+      controller[action](req, res, next);
+    });
+  }
+  else {
+    application.route(route)[method](function (req, res, next) {
+      controller[action](req, res, next);
+    });
+  }
 }
 
 function createConfigRoute(application) {
   application.route('/config').get(function(req, res, next) {
-    res.status(200).json(settingsConfig.settings);
+    res.status(200).json(config.app);
   });
 }
 
