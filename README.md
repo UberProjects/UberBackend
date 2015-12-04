@@ -2,20 +2,20 @@
 
 ## Application structure 
 
-app
-    - config
-        - env (dir)
-        - routes (dir)
-        - strategies (dir)
-        - env-config.js 
-        - init.js
-        - passport.js
-        - route-config.js
-    - controllers
-        -v1
-            - users
-    - models
-    - utils
+app:
+  - config
+      - env (dir)
+      - routes (dir)
+      - strategies (dir)
+      - env-config.js 
+      - init.js
+      - passport.js
+      - route-config.js
+  - controllers
+      - v1
+        - users
+  - models
+  - utils
 
 server.js
 
@@ -31,6 +31,7 @@ All json files in this directory will be loaded into the express application
 and must follow the existing format. See user.route.config.json for an example
 
 general route definition is:
+```json
 {
     "route":"", //http route to be called from cordova
     "method":"", //standard http methods i.e get, put, ect
@@ -38,7 +39,7 @@ general route definition is:
     "auth":"", //true or false value specifies if passport auth is needed
     "controller":""//realtive path to controller
 }
-
+```
 **Controllers must be defined using a certain pattern for routes 
 to work properly**
 
@@ -66,6 +67,7 @@ function foo(){}//Controller function
 ControllerName.prototype = {
     foo:foo
 }//allows text definition of actions
+
 module.exports = new ControllerName();
 ```
 Also please add routes to the v1 directory to allow for easy 
@@ -86,15 +88,18 @@ for example utils.js currently has a helper function that globs needed
 application files     
 
 ## Needed env vars
-NODE_ENV used to set application mode and load needed configurations 
+####NODE_ENV
+used to set application mode and load needed configurations 
 
 Modes:
-    - Development 
-    - Production 
-    - Test
-    - Secure (Need to modify express-config to work)    
+  - Development 
+  - Production 
+  - Test
+  - Secure (Need to modify express-config to work)    
 
-MONGO_DB_URI used to connect to a mongodb. Stores users, sessions, ect
+####MONGO_DB_URI
+used to connect to a mongodb. Stores users, sessions, ect
+
 (Note if you use a mongoLabs db random disconnects can occure just restart the app)
 send an email to matt for access to hosted mongodb instance
 
