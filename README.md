@@ -1,7 +1,9 @@
 # UberCU Backend
+Contains back end logic for our cordova application.
+Structure based off of a yo generator with several modifications
+for easier configuration and development 
 
 ## Application structure 
-
 app:
   - config
       - env (dir)
@@ -103,3 +105,7 @@ used to connect to a mongodb. Stores users, sessions, ect
 (Note if you use a mongoLabs db random disconnects can occure just restart the app)
 send an email to matt for access to hosted mongodb instance
 
+##TODO
+  - Update various passport routes and redirects to work with cordova  
+  - Add a proper error logger 
+  - Integrate with Uber node work
