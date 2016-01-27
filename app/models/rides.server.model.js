@@ -40,7 +40,7 @@ var RideSchema = new Schema({
 		location:{
 			type: (Number, Number),
 		}
-		phone:
+		phone:{
 			type: String,
 			trim: true,
 			default: '555-555-5555'
@@ -61,4 +61,4 @@ var RideSchema = new Schema({
 			default: "no"
 		}
 	}]
-})
+});
