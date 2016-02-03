@@ -9,7 +9,7 @@ function RouteConfig() {
 
 function registerRoutes(application) {
   var config;
-  utils.getGlobbedFiles('./routes/**/*.json').forEach(function (routeInfo) {
+  utils.getGlobbedFiles('./app/config/routes/**/*.json').forEach(function (routeInfo) {
 
     config = require(path.resolve(routeInfo));
 
@@ -24,15 +24,15 @@ function registerRoutes(application) {
 
         var controller = loadController(routeItem);
         var postItem = getIsPost(routeItem);
-        var method = getMethod(routeItem);
+        var action = getAction(routeItem);
 
         if(!postItem){
+          var method = getMethod(routeItem);
           var route = getRoute(routeItem);
-          var action = getAction(routeItem);
           var authRequired = getAuth(routeItem);
           registerRoute(application, controller, route, method, action, authRequired);
         }else{
-          controller[method](application);
+          controller[action](application);
         }
       }
 
@@ -99,7 +99,7 @@ function getAuth(routeItem){
 }
 
 function getIsPost(routeItem){
-  return !!(routeItem && routeItem.auth && routeItem.post_setup=== "true");
+  return !!(routeItem && routeItem.post_setup && routeItem.post_setup == 'true');
 }
 
 function registerRoute(application, controller, route, method, action, authRequired) {

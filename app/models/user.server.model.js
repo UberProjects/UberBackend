@@ -59,6 +59,11 @@ password: {
   default: '',
   validate: [validateLocalStrategyPassword, 'Password should be longer']
 },
+phoneNumber:{
+  type: String,
+  trim: true,
+  default:''
+},
 salt: {
   type: String
 },

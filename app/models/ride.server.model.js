@@ -9,15 +9,16 @@ crypto = require('crypto');
 //possible validations:
 var validateCost = function(cost){
 	return (cost >= 0.00);
-}
-
+};
 
 /**
 * Ride Schema
 */
 
 var RideSchema = new Schema({
-	requester: @user_db_reference,
+	requester_id:{
+    type: 'ObjectId'
+  },
 	ride_state: {
 		type: String,
 		trim: true,
@@ -25,40 +26,42 @@ var RideSchema = new Schema({
 	},
 	ride_est: {	//Estimate in USD, greater than or equal to 0
 		type: Number,
-		default:'0.00',
+		default: 0.00,
 		validate: [validateCost, 'Cost cannot be below 0.00']
 	},
-	current_route:{
-		type: Array[(Number, Number)]
-	},
+	current_route:[{
+      lat: Number,
+      lng: Number
+   }],
 	updated:{
 		type: Date
 	},
 	//relevant_uber_info,
 	ride_users:[{
-		user_id: @user_db_reference,
-		location:{
-			type: (Number, Number),
-		}
+		user_id:{
+      type: 'ObjectId'
+    },
+		location:[{
+      lat: Number,
+      lng: Number
+    }],
 		phone:{
 			type: String,
 			trim: true,
 			default: '555-555-5555'
-		}
-		payment_status: { //possible statuses: paid/unpaid
-			type: String,
-			trim: true
-			default: 'unpaid'
-		}
+		},
+		payed: { //possible statuses: paid/unpaid
+    	type: Boolean,
+			default: false
+		},
 		amount:{ //greater than or equal to 0
 			type: Number,
 			default: '0.00',
 			validate: [validateCost, 'Cost cannot be below 0.00']
-		}
-		accept_stats:{ //possible statuses: yes/no
-			type: String,
-			trim: true,
-			default: "no"
+		},
+		accepted:{ //possible statuses: yes/no
+			type: Boolean,
+			default: false
 		}
 	}]
 });

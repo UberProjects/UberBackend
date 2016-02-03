@@ -69,11 +69,6 @@
       "action": "reset",
       "auth": "false",
       "controller": "../controllers/v1/users/users.server.controller.js"
-    },
-    {
-      "post_setup":"true",
-      "method":"postSetup",
-      "controller": "../controllers/v1/users/users.server.controller.js"
     }
   ]
 }
