@@ -48,7 +48,7 @@ var RideSchema = new Schema({
 		phone:{
 			type: String,
 			trim: true,
-			default: '555-555-5555'
+			default: ''
 		},
 		payed: { //possible statuses: paid/unpaid
     	type: Boolean,
