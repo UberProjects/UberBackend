@@ -6,9 +6,20 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 crypto = require('crypto');
 
+//Matches US and international
+var phoneReg = new RegExp("^[+]?([0-9]*[\.\s\-\(\)]|[0-9]+){3,24}$");
+
 //possible validations:
 var validateCost = function(cost){
 	return (cost >= 0.00);
+};
+
+var validatePhone = function(number){
+	return (phoneReg.test(number));
+};
+
+var validateState = function(state){
+	return (state == "Forming" || state == "In Progress" || state == "Completed");
 };
 
 /**
@@ -18,11 +29,12 @@ var validateCost = function(cost){
 var RideSchema = new Schema({
 	requester_id:{
     type: 'ObjectId'
-  },
+    },
 	ride_state: {
 		type: String,
 		trim: true,
-		default: ''
+		default: '',
+		validate: [validateState, 'Not in a valid state']
 	},
 	ride_est: {	//Estimate in USD, greater than or equal to 0
 		type: Number,
@@ -36,22 +48,25 @@ var RideSchema = new Schema({
 	updated:{
 		type: Date
 	},
-	//relevant_uber_info,
+	uber_id:{
+		type: String
+	},
 	ride_users:[{
 		user_id:{
-      type: 'ObjectId'
-    },
+      		type: 'ObjectId'
+   		},
 		location:[{
-      lat: Number,
-      lng: Number
-    }],
+      		lat: Number,
+      		lng: Number
+    	}],
 		phone:{
 			type: String,
 			trim: true,
-			default: '555-555-5555'
+			default: '555-555-5555',
+			validate: [validatePhone, 'Enter a valid phone number']
 		},
-		payed: { //possible statuses: paid/unpaid
-    	type: Boolean,
+		paid: { //possible statuses: paid/unpaid
+    		type: Boolean,
 			default: false
 		},
 		amount:{ //greater than or equal to 0
