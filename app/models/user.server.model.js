@@ -93,6 +93,9 @@ resetPasswordToken: {
 },
 resetPasswordExpires: {
   type: Date
+},
+savedRides: {
+  type: ['ObjectId'] //array of ride ids
 }
 });
 
