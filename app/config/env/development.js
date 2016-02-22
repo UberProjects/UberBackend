@@ -10,7 +10,7 @@ module.exports = {
       client_secret: process.env.CLIENT_SECRET || 'bar',
       server_token:  process.env.SERVER_TOKEN || 'baz',
       redirect_uri:  process.env.REDIRECT_URI || 'http://localhost/callback',
-      name:          process.env.process.NAME || 'RideWithFriendsCU'
+      name:          process.env.NAME || 'RideWithFriendsCU'
   },
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'APP_ID',
