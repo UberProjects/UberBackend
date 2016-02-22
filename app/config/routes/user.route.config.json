@@ -18,7 +18,7 @@
       "route": "/v1/auth/signout",
       "method": "GET",
       "action": "signout",
-      "auth": "false",
+      "auth": "true",
       "controller": "../controllers/v1/users/users.server.controller.js"
     },
     {

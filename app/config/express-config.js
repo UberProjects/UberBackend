@@ -15,14 +15,18 @@ var utils = require('../utils/utils');
 var path = require('path');
 var session = require('express-session');
 var chalk = require('chalk');
+var q = require('q');
 var mongoStore = require('connect-mongo')({
   session: session
 });
+var io = require('socket.io');
 
 module.exports = function(db) {
   var application = express();
 
   function configureWorker(application) {
+    var socketDeffer = q.defer();
+    application.set('socketDeffer', socketDeffer);
     configureApplication(application);
     configureRoutes(application);
     startServer(application);
@@ -88,6 +92,10 @@ module.exports = function(db) {
    */
   function startServer(application) {
     var server = http.createServer(application);
+    var ioPromis = application.get('socketDeffer');
+
+    var myIo = io.listen(server);
+    ioPromis.resolve(myIo);
 
     server.listen(
       config.port,
