@@ -1,0 +1,19 @@
+
+{
+  "routes": [
+    {
+      "route": "/v1/communication/chat",
+      "method": "PUT",
+      "action": "chat",
+      "auth": "false",
+      "controller": "../controllers/v1/communication/communication.server.controller.js"
+    },
+    {
+      "route": "/v1/communication/makepayment",
+      "method": "PUT",
+      "action": "makepayment",
+      "auth": "false",
+      "controller": "../controllers/v1/communication/communication.server.controller.js"
+    }
+  ]
+}
