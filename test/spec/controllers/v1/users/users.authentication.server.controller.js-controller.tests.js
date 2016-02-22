@@ -1,7 +1,15 @@
 
 describe('UsersAuthenticationServerControllerJsController Tests', function() {
 
-  var users.authentication.server.controller.jsController;
+  var users = {
+    authentication:{
+      server:{
+        controller:{
+          jsController:{}
+        }
+      }
+    }
+  };
   var req;
   var res;
   var next;
