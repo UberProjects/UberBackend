@@ -4,14 +4,8 @@
  */
 
 var Uber = require('node-uber');
-
-var uber = new Uber({
-  client_id: 'F23Rp_lYXaXkZr_XLFbghHRlNh92ILKk',
-  client_secret:'1KzAUC1vvIGc2PnAYsyYvVu2qzhgbHIuiJmFJPXi',
-  server_token:'5p-mn8J39yBkcSPM_BF-jQU5eI7beyRyLIeBA75A',
-  redirect_uri:'http://localhost/callback',
-  name:'RideWithFriendsCU'
-});
+var config = require('../config/env-config');
+var uber = new Uber(config.uber_info);
 
 module.exports.getEst = function(start, end){
 
