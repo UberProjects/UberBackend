@@ -5,6 +5,13 @@
 
 module.exports = {
   db: process.env.MONGO_DB_URI || 'mongodb://localhost:27017/uber_db',
+  uber_info:{
+      client_id:     process.env.CLIENT_ID || 'foo',
+      client_secret: process.env.CLIENT_SECRET || 'bar',
+      server_token:  process.env.SERVER_TOKEN || 'baz',
+      redirect_uri:  process.env.REDIRECT_URI || 'http://localhost/callback',
+      name:          process.env.NAME || 'RideWithFriendsCU'
+  },
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'APP_ID',
     clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',

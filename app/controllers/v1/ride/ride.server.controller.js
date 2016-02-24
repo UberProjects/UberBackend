@@ -15,12 +15,15 @@
  */
 var _ = require('lodash');
 
+
 /**
  * Extend user's controller
  */
-module.exports = _.extend(
-  require('./ride.communication.server.controller'),
-  require('./ride.formation.controller'),
-  require('./ride.history.server.controller'),
-  require('./ride.state.server.controller')
+module.exports = _.assignIn(
+  {
+      loadApp: function(application){
+        this.app = application;
+      }
+  },
+  require('./ride.core.server.controller.js')
 );
