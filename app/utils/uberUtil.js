@@ -15,6 +15,13 @@ module.exports.getProducts = function(coords, cb){
     uber.products.list(coords, cb);
 };
 
+module.exports.getProduct = function(product_id, cb) {
+    options = {
+        url: "products/" + product_id
+    };
+    uber.get(options, cb);
+};
+
 //IDK why uber is sending me acces_toens instead of authorization tokens
 module.exports.getAuth = function(uber_info, cb){
     console.log(uber_info);

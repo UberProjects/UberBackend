@@ -37,11 +37,22 @@ function coreSockets() {
 
 function getLocalProducts(req, ret) {
     if (!req.body.pos) return ret.status(400).send({message: 'no pos send'});
-    uberUtil.getProducts(req.body.pos, function (err, ret) {
+    uberUtil.getProducts(req.body.pos, function (err, res) {
         if (err) {
             ret.status(400).send({message: err});
         } else {
-            ret.status(200).send({message: ret});
+            ret.status(200).send({message: res});
+        }
+    })
+}
+
+function getProductById(req, ret) {
+    if (!req.body.product_id) return ret.status(400).send({message: 'product id not sent'});
+    uberUtil.getProduct(req.body.product_id, function (err, res) {
+        if (err) {
+            ret.status(400).send({message: err});
+        } else {
+            ret.status(200).send({message: res});
         }
     })
 }

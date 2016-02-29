@@ -1,28 +1,42 @@
 {
-  "routes":[
-    {
-      "post_setup":"true",
-      "action":"loadApp",
-      "controller": "../controllers/v1/ride/ride.server.controller.js"
-    },
-    {
-      "post_setup":"true",
-      "action":"coreSockets",
-      "controller": "../controllers/v1/ride/ride.server.controller.js"
-    },
-    {
-      "route":"/v1/ride/newRide",
-      "method":"POST",
-      "action":"newRide",
-      "auth":"true",
-      "controller": "../controllers/v1/ride/ride.server.controller.js"
-    },
-    {
-      "route":"/v1/ride/checkFriend",
-      "method":"POST",
-      "action":"checkFriend",
-      "auth":"true",
-      "controller": "../controllers/v1/ride/ride.server.controller.js"
-    }
-  ]
+    "routes": [
+        {
+            "post_setup": "true",
+            "action": "loadApp",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "post_setup": "true",
+            "action": "coreSockets",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/newRide",
+            "method": "POST",
+            "action": "newRide",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/checkFriend",
+            "method": "POST",
+            "action": "checkFriend",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/getUberProductLocations",
+            "method": "POST",
+            "action": "getLocalProducts",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/getUberProductById",
+            "method": "POST",
+            "action": "getProductById",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        }
+    ]
 }
