@@ -7,8 +7,14 @@ var Uber = require('node-uber');
 var config = require('../config/env-config');
 var uber = new Uber(config.uber_info);
 
-module.exports.getEst = function(start, end){
-
+module.exports.getEstPrice = function(start_pos, end_pos, cb){
+    var params = {
+        start_latitude:  start_pos['lat'],
+        start_longitude: start_pos['long'],
+        end_latitude:    end_pos['lat'],
+        end_longitude:   end_pos['long']
+    };
+    uber.estimates.price(params, cb);
 };
 
 module.exports.getProducts = function(coords, cb){
@@ -16,10 +22,10 @@ module.exports.getProducts = function(coords, cb){
 };
 
 module.exports.getProduct = function(product_id, cb) {
-    options = {
+    var params = {
         url: "products/" + product_id
     };
-    uber.get(options, cb);
+    uber.get(params, cb);
 };
 
 //IDK why uber is sending me acces_toens instead of authorization tokens

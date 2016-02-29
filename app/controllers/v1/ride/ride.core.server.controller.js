@@ -43,7 +43,7 @@ function getLocalProducts(req, ret) {
         } else {
             ret.status(200).send({message: res});
         }
-    })
+    });
 }
 
 function getProductById(req, ret) {
@@ -54,7 +54,19 @@ function getProductById(req, ret) {
         } else {
             ret.status(200).send({message: res});
         }
-    })
+    });
+}
+
+function getEstimatedPrice(req, ret) {
+    console.log(req.body);
+    if (!req.body.start_pos || !req.body.end_pos) return ret.status(400).send({message: 'location not sent'});
+    uberUtil.getEstPrice(req.body.start_pos, req.body.end_pos, function (err, res) {
+        if (err) {
+            ret.status(400).send({message: err});
+        } else {
+            ret.status(200).send({message: res});
+        }
+    });
 }
 
 function newRide(req, res) {
@@ -99,6 +111,8 @@ function checkFriend(req, res) {
 RideFormationController.prototype = {
     newRide: newRide,
     getLocalProducts: getLocalProducts,
+    getProductById: getProductById,
+    getEstimatedPrice: getEstimatedPrice,
     checkFriend: checkFriend,
     coreSockets: coreSockets
 };

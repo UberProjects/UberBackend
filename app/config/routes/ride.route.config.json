@@ -37,6 +37,13 @@
             "action": "getProductById",
             "auth": "true",
             "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/getUberEstimatedPrice",
+            "method": "POST",
+            "action": "getEstimatedPrice",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
         }
     ]
 }
