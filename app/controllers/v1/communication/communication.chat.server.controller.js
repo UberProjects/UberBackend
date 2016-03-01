@@ -6,10 +6,6 @@ var io = require('socket.io')(server);
 var User = mongoose.model('User');
 
 
-// function CommunicationController(){
-//   var socket = io();
-// }
-
 function addParticipantsMessage (data) {
   var message = '';
   if (data.numUsers === 1) {

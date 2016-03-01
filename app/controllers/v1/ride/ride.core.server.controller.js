@@ -35,6 +35,37 @@ function coreSockets() {
     });
 }
 
+// Sets the client's username
+function addUsertoRoom (ride_object, user_object) {
+
+  var io = require('socket.io')();
+
+  io.promise.then(io.on('add user', function(socket){
+
+    socket.in(ride_object.socket_io_room).emit('user joined', {
+      username : user_object.displayName
+      });
+
+    });
+  );
+}
+
+// Sends a chat message
+function sendMessage (ride_object, inputMessage) {
+  var message = inputMessage;
+  // Prevent markup from being injected into the message
+  message = cleanInput(message);
+
+  var io = require('socket.io')();
+
+  io.promise.then(io.on('new message', function(socket){
+
+    socket.in(ride_object.socket_io_room).emit('new message', message);
+
+    });
+  );
+}
+
 function getLocalProducts(req, ret) {
     if (!req.body.pos) return ret.status(400).send({message: 'no pos send'});
     uberUtil.getProducts(req.body.pos, function (err, ret) {
@@ -93,5 +124,3 @@ RideFormationController.prototype = {
 };
 
 module.exports = new RideFormationController();
-
-
