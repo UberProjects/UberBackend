@@ -38,32 +38,39 @@ function coreSockets() {
 // Sets the client's username
 function addUsertoRoom (ride_object, user_object) {
 
-  var io = require('socket.io')();
+  var socketLoad = this.app.get('socketDeffer');
 
-  io.promise.then(io.on('add user', function(socket){
+  socketLoad.promise.then(function(io){
+
+    io.on('add user', function(socket){
 
     socket.in(ride_object.socket_io_room).emit('user joined', {
       username : user_object.displayName
       });
 
-    });
-  );
+    })
+  });
 }
 
+function cleanInput (input) {
+   return $('<div/>').text(input).text();
+ }
 // Sends a chat message
 function sendMessage (ride_object, inputMessage) {
   var message = inputMessage;
   // Prevent markup from being injected into the message
   message = cleanInput(message);
 
-  var io = require('socket.io')();
+  var socketLoad = this.app.get('socketDeffer');
 
-  io.promise.then(io.on('new message', function(socket){
+  socketLoad.promise.then(function(io){
+
+    io.on('new message', function(socket){
 
     socket.in(ride_object.socket_io_room).emit('new message', message);
 
-    });
-  );
+    })
+  });
 }
 
 function getLocalProducts(req, ret) {
