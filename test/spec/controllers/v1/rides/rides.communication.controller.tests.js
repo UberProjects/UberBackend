@@ -23,7 +23,7 @@ describe('RidesCommunicationController Tests', function() {
     ride.core.server.controller.jsController = require('../../../../../app/controllers/v1/ride/ride.core.server.controller.js');
   });
 
-  describe('put()', function() {
+  describe('sendMessage()', function() {
 
     it('should be a function', function(done) {
       expect(ride.core.server.controller.jsController.sendMessage).to.be.a('function');

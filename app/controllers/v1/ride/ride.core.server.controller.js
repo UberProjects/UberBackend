@@ -36,7 +36,7 @@ function coreSockets() {
 }
 
 // Sets the client's username
-function addUsertoRoom (ride_object, user_object) {
+function addUsertoRoom (req, ret) {
 
   var socketLoad = this.app.get('socketDeffer');
 
@@ -44,20 +44,23 @@ function addUsertoRoom (ride_object, user_object) {
 
     io.on('add user', function(socket){
 
-    socket.in(ride_object.socket_io_room).emit('user joined', {
-      username : user_object.displayName
+      socket.in(req.Ride.socket_io_room).emit('user joined', {
+        username : req.User.displayName
       });
 
     })
   });
 }
 
-function cleanInput (input) {
-   return $('<div/>').text(input).text();
- }
+
 // Sends a chat message
-function sendMessage (ride_object, inputMessage) {
-  var message = inputMessage;
+function sendMessage (req, ret) {
+
+  function cleanInput (input) {
+     return $('<div/>').text(input).text();
+   }
+
+  var message = req.inputMessage;
   // Prevent markup from being injected into the message
   message = cleanInput(message);
 
@@ -67,11 +70,27 @@ function sendMessage (ride_object, inputMessage) {
 
     io.on('new message', function(socket){
 
-    socket.in(ride_object.socket_io_room).emit('new message', message);
+      socket.in(req.Ride.socket_io_room).emit('new message', message);
 
     })
   });
 }
+
+
+function sendNotification(req, ret){
+  var socketLoad = this.app.get('socketDeffer');
+
+  socketLoad.promise.then(function(io){
+
+    io.on('event', function(socket){
+
+      socket.in(req.Ride.socket_io_room).emit('New Event', req.event);
+
+    })
+  });
+
+}
+
 
 function getLocalProducts(req, ret) {
     if (!req.body.pos) return ret.status(400).send({message: 'no pos send'});
