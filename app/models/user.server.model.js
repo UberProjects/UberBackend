@@ -72,6 +72,10 @@ var UserSchema = new Schema({
        refresh_token:'',
        scope:''
     },
+    push_token:{
+        type: String,
+        trim: true
+    },
     salt: {
         type: String
     },

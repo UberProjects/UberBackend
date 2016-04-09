@@ -85,6 +85,7 @@ function checkFriend(req, res) {
     });
 }
 
+
 RideFormationController.prototype = {
     initRide: initRide,
     getLocalProducts: getLocalProducts,
