@@ -36,6 +36,13 @@
       "controller": "../controllers/v1/users/users.server.controller.js"
     },
     {
+      "route": "/v1/users/update_push_token",
+      "method": "PUT",
+      "action": "update_push_token",
+      "auth": "true",
+      "controller": "../controllers/v1/users/users.server.controller.js"
+    },
+    {
       "route": "/v1/users/accounts",
       "method": "DELETE",
       "action": "removeOAuthProvider",

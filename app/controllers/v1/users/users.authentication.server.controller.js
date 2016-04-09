@@ -17,32 +17,43 @@ function signup(req, res, next) {
     delete req.body.roles;
     // Init Variables
 
-    var user = new User(req.body);
-
-    // Add missing user fields
-    user.provider = 'local';
-    user.displayName = user.firstName + ' ' + user.lastName;
-
-    // Then save the user
-    user.save(function (err) {
+    var saveUser = function(err, access_token, refresh_token) {
+        var user_params = req.body;
         if (err) {
-            return res.status(400).send({ message: err });
+            console.log(error);
         } else {
-            // Remove sensitive networks before login
-            user.password = undefined;
-            user.salt = undefined;
-            user.uber_access = undefined;
-
-            req.login(user, function (err) {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.json(user);
-                }
-            });
+            user_params.uber_access = {access_token: access_token, refresh_token: refresh_token};
         }
-    });
+        var user = new User(user_params);
 
+        // Add missing user fields
+        user.provider = 'local';
+        user.displayName = user.firstName + ' ' + user.lastName;
+
+        // Then save the user
+        user.save(function (err) {
+            if (err) {
+                return res.status(400).send({ message: err });
+            } else {
+                // Remove sensitive networks before login
+                user.password = undefined;
+                user.salt = undefined;
+                user.uber_access = undefined;
+
+                req.login(user, function (err) {
+                    if (err) {
+                        res.status(400).send(err);
+                    } else {
+                        res.json(user);
+                    }
+                });
+            }
+        });
+    };
+
+    if (req.body.uber_access.authorization_code) {
+        uberUtil.getAuth(req.body.uber_access.authorization_code, saveUser);
+    }
 }
 
 function signin(req, res, next) {

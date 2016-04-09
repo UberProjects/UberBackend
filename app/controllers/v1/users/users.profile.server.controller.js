@@ -46,12 +46,33 @@ function update(req, res, next){
   }
 }
 
+function update_push_token(req, res){
+    var user = req.user;
+    user.push_token = req.body.push_token._token;
+    user.save(function(err) {
+          if (err) {
+            return res.status(400).send({
+              message: err
+            });
+          } else {
+            req.login(user, function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          }
+    });
+}
+
 function me(req, res, next){
   res.json(req.user || null);
 }
 
 UsersProfileServerController.prototype = {
   update:update,
+  update_push_token: update_push_token,
   me:me
 };
 

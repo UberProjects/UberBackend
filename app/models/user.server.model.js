@@ -66,11 +66,16 @@ var UserSchema = new Schema({
         default: ''
     },
     uber_access:{
+       authorization_code: String,
        access_token: String,
        token_type: String,
        expires_in: Number,
        refresh_token:'',
        scope:''
+    },
+    push_token:{
+        type: String,
+        trim: true
     },
     salt: {
         type: String
