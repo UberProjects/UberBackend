@@ -130,7 +130,7 @@ function deleteRequestedRide(req, ret) {
     });
 }
 
-function newRide(req, res) {
+function initRide(req, res) {
     var data = req.body;
 
     var newRide = new Ride();
@@ -170,7 +170,7 @@ function checkFriend(req, res) {
 }
 
 RideFormationController.prototype = {
-    newRide: newRide,
+    initRide: initRide,
     getLocalProducts: getLocalProducts,
     getProductById: getProductById,
     getEstimatedPrice: getEstimatedPrice,
