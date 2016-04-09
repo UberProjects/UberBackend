@@ -11,9 +11,9 @@
             "controller": "../controllers/v1/ride/ride.server.controller.js"
         },
         {
-            "route": "/v1/ride/newRide",
+            "route": "/v1/ride/init",
             "method": "POST",
-            "action": "newRide",
+            "action": "initRide",
             "auth": "true",
             "controller": "../controllers/v1/ride/ride.server.controller.js"
         },
@@ -70,13 +70,6 @@
             "route": "/v1/ride/deleteUberRequestedRide",
             "method": "POST",
             "action": "deleteRequestedRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/init",
-            "method": "POST",
-            "action": "initRide",
             "auth": "true",
             "controller": "../controllers/v1/ride/ride.server.controller.js"
         }
