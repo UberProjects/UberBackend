@@ -7,8 +7,7 @@ var mongoose = require('mongoose'),
     crypto = require('crypto');
 
 //Matches US and international
-var phoneReg = new RegExp("^([+]?([0-9]*[\\.\\s\\-\\(\\)]|[0-9]+){3,24})$");
-
+//var phoneReg = new RegExp("^[+]?([0-9]*[\.\s\-\(\)]|[0-9]+){3,24}$");
 
 //possible validations:
 var validateCost = function (cost) {
