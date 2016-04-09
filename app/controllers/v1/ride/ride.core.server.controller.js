@@ -48,7 +48,20 @@ function getLocalProducts(req, ret) {
 
 function getProductById(req, ret) {
     if (!req.body.product_id) return ret.status(400).send({message: 'product id not sent'});
-    uberUtil.getProduct(req.body.product_id, function (err, res) {
+    User.findOne({_id: req.body.user._id}, function(err, user) {
+        uberUtil.getProduct(req.body.product_id, user.uber_access.access_token, function (err, res) {
+            if (err) {
+                ret.status(400).send({message: err});
+            } else {
+                ret.status(200).send({message: res});
+            }
+        });
+    });
+}
+
+function getEstimatedPrice(req, ret) {
+    if (!req.body.start_pos || !req.body.end_pos) return ret.status(400).send({message: 'location not sent'});
+    uberUtil.getEstPrice(req.body.start_pos, req.body.end_pos, function (err, res) {
         if (err) {
             ret.status(400).send({message: err});
         } else {
@@ -57,15 +70,38 @@ function getProductById(req, ret) {
     });
 }
 
-function getEstimatedPrice(req, ret) {
-    console.log(req.body);
-    if (!req.body.start_pos || !req.body.end_pos) return ret.status(400).send({message: 'location not sent'});
-    uberUtil.getEstPrice(req.body.start_pos, req.body.end_pos, function (err, res) {
-        if (err) {
-            ret.status(400).send({message: err});
-        } else {
-            ret.status(200).send({message: res});
-        }
+function requestRide(req, ret) {
+    if (!req.body.start_pos || !req.body.end_pos || !req.body.product_id) return ret.status(400).send({message: 'ride information not sent'});
+    User.findOne({_id: req.body.user._id}, function (err, user) {
+        uberUtil.requestRide(req.body.start_pos, req.body.end_pos, req.body.product_id, user.uber_access.access_token, function (err, res) {
+            if (err) {
+                ret.status(400).send({message: err});
+            } else {
+                var request_id = res.request_id;
+                // This is required while using the sandbox API
+                uberUtil.acceptRequestedRide(request_id, function (err, accept_res) {
+                    if (err) {
+                        ret.status(400).send({message: err});
+                    } else {
+                        ret.status(200).send({message: res});
+                    }
+                });
+            }
+        });
+    });
+}
+
+function getRequestedRide(req, ret) {
+    if (!req.body.request_id) return ret.status(400).send({message: 'request id not sent'});
+    User.findOne({_id: req.body.user._id}, function (err, user) {
+        uberUtil.getRequestedRide(req.body.request_id, user.uber_access.access_token, function (err, res) {
+            if (err) {
+                console.log(err);
+                ret.status(400).send({message: err});
+            } else {
+                ret.status(200).send({message: res});
+            }
+        });
     });
 }
 
@@ -113,6 +149,8 @@ RideFormationController.prototype = {
     getLocalProducts: getLocalProducts,
     getProductById: getProductById,
     getEstimatedPrice: getEstimatedPrice,
+    requestRide: requestRide,
+    getRequestedRide: getRequestedRide,
     checkFriend: checkFriend,
     coreSockets: coreSockets
 };

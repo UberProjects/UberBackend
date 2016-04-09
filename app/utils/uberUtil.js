@@ -21,19 +21,52 @@ module.exports.getProducts = function(coords, cb){
     uber.products.list(coords, cb);
 };
 
-module.exports.getProduct = function(product_id, cb) {
+module.exports.getProduct = function(product_id, access_token, cb) {
     var params = {
-        url: "products/" + product_id
+        url: "products/" + product_id,
+        access_token: access_token
     };
     uber.get(params, cb);
 };
 
+module.exports.requestRide = function(start_pos, end_pos, product_id, access_token, cb) {
+    var request_body = {
+        start_latitude:  start_pos['lat'],
+        start_longitude: start_pos['long'],
+        end_latitude:    end_pos['lat'],
+        end_longitude:   end_pos['long'],
+        product_id: product_id
+    };
+    var params = {
+        url: "requests",
+        params: request_body
+    };
+    uber.access_token = access_token;
+    uber.post(params, cb);
+};
+
+module.exports.getRequestedRide = function(request_id, access_token, cb) {
+    var params = {
+        url: "requests/" + request_id,
+        access_token: access_token
+    };
+    uber.get(params, cb);
+};
+
+module.exports.acceptRequestedRide = function(request_id, cb) {
+    var params = {
+        version: "v1/sandbox",
+        url: "requests/" + request_id,
+        params: { status: "accepted" }
+    };
+    uber.put(params, cb);
+};
+
 //IDK why uber is sending me acces_toens instead of authorization tokens
-module.exports.getAuth = function(uber_info, cb){
-    console.log(uber_info);
-    uber.authorization(uber_info.access_token, function(err, access_token){
+module.exports.getAuth = function(authorization_code, cb){
+    uber.authorization({authorization_code: authorization_code}, function(err, access_token, refresh_token){
         console.log('Access Token: ' + JSON.stringify(access_token));
-       cb(err, access_token);
+        cb(err, access_token, refresh_token);
     });
 };
 
