@@ -13,6 +13,8 @@ describe('RidesCommunicationController Tests', function() {
   var req;
   var res;
   var next;
+  var mongoose = require('mongoose');
+  var assert = require('assert')
 
   beforeEach(function() {
     req = {};
@@ -20,13 +22,18 @@ describe('RidesCommunicationController Tests', function() {
 
     // sinon.spy(res, "status");
 
+    mongoose.model('Ride', new mongoose.Schema());
+    var rideModel = mongoose.model('Ride');
+    mongoose.model('User', new mongoose.Schema());
+    var userModel = mongoose.model('User');
+
     ride.core.server.controller.jsController = require('../../../../../app/controllers/v1/ride/ride.core.server.controller.js');
   });
 
   describe('sendMessage()', function() {
 
     it('should be a function', function(done) {
-      expect(ride.core.server.controller.jsController.sendMessage).to.be.a('function');
+      assert(ride.core.server.controller.jsController.sendMessage).to.be.a('function');
       done();
     });
 

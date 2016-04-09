@@ -23,6 +23,27 @@
       "action":"checkFriend",
       "auth":"true",
       "controller": "../controllers/v1/ride/ride.server.controller.js"
+    },
+    {
+      "route":"/v1/ride/addUsertoRoom",
+      "method":"POST",
+      "action":"addUsertoRoom",
+      "auth":"true",
+      "controller": "../controllers/v1/ride/ride.communication.server.controller.js"
+    },
+    {
+      "route":"/v1/ride/sendMessage",
+      "method":"POST",
+      "action":"sendMessage",
+      "auth":"true",
+      "controller": "../controllers/v1/ride/ride.communication.server.controller.js"
+    },
+    {
+      "route":"/v1/ride/sendNotification",
+      "method":"POST",
+      "action":"sendNotification",
+      "auth":"true",
+      "controller": "../controllers/v1/ride/ride.communication.server.controller.js"
     }
   ]
 }
