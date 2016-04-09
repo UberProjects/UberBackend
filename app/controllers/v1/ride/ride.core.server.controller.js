@@ -96,7 +96,32 @@ function getRequestedRide(req, ret) {
     User.findOne({_id: req.body.user._id}, function (err, user) {
         uberUtil.getRequestedRide(req.body.request_id, user.uber_access.access_token, function (err, res) {
             if (err) {
-                console.log(err);
+                ret.status(400).send({message: err});
+            } else {
+                ret.status(200).send({message: res});
+            }
+        });
+    });
+}
+
+function patchRequestedRide(req, ret) {
+    if (!req.body.request_id || !req.body.end_pos) return ret.status(400).send({message: 'patch information not sent'});
+    User.findOne({_id: req.body.user._id}, function (err, user) {
+        uberUtil.patchRequestedRide(req.body.request_id, req.body.end_pos, user.uber_access.access_token, function (err, res) {
+            if (err) {
+                ret.status(400).send({message: err});
+            } else {
+                ret.status(200).send({message: res});
+            }
+        });
+    });
+}
+
+function deleteRequestedRide(req, ret) {
+    if (!req.body.request_id) return ret.status(400).send({message: 'ride id not sent'});
+    User.findOne({_id: req.body.user._id}, function (err, user) {
+        uberUtil.deleteRequestedRide(req.body.request_id, user.uber_access.access_token, function (err, res) {
+            if (err) {
                 ret.status(400).send({message: err});
             } else {
                 ret.status(200).send({message: res});
@@ -151,6 +176,8 @@ RideFormationController.prototype = {
     getEstimatedPrice: getEstimatedPrice,
     requestRide: requestRide,
     getRequestedRide: getRequestedRide,
+    patchRequestedRide: patchRequestedRide,
+    deleteRequestedRide: deleteRequestedRide,
     checkFriend: checkFriend,
     coreSockets: coreSockets
 };

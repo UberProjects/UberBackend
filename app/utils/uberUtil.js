@@ -3,7 +3,7 @@
  * Created by Matthias on 2/10/16.
  */
 
-var Uber = require('node-uber');
+var Uber = require('./node-uber/lib/Uber');
 var config = require('../config/env-config');
 var uber = new Uber(config.uber_info);
 
@@ -62,10 +62,30 @@ module.exports.acceptRequestedRide = function(request_id, cb) {
     uber.put(params, cb);
 };
 
+module.exports.patchRequestedRide = function(request_id, end_pos, access_token, cb) {
+    var request_body = {
+        end_latitude: end_pos['lat'],
+        end_longitude: end_pos['long']
+    };
+    var params = {
+        url: "requests/" + request_id,
+        access_token: access_token,
+        params: request_body
+    };
+    uber.patch(params, cb);
+};
+
+module.exports.deleteRequestedRide = function(request_id, access_token, cb) {
+    var params = {
+        url: "requests/" + request_id,
+        access_token: access_token
+    };
+    uber.delete(params, cb);
+};
+
 //IDK why uber is sending me acces_toens instead of authorization tokens
 module.exports.getAuth = function(authorization_code, cb){
     uber.authorization({authorization_code: authorization_code}, function(err, access_token, refresh_token){
-        console.log('Access Token: ' + JSON.stringify(access_token));
         cb(err, access_token, refresh_token);
     });
 };
