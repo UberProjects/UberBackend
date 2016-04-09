@@ -66,6 +66,7 @@ var UserSchema = new Schema({
         default: ''
     },
     uber_access:{
+       authorization_code: String,
        access_token: String,
        token_type: String,
        expires_in: Number,
