@@ -43,14 +43,13 @@ var RideSchema = new Schema({
         validate: [validateCost, 'Cost cannot be below 0.00']
     },
     destination:{
-        address:'',
         lat: Number,
         lng: Number
     },
-    current_route: [{
+    start_location:{
         lat: Number,
         lng: Number
-    }],
+    },
     updated: {
         type: Date
     },
@@ -64,10 +63,10 @@ var RideSchema = new Schema({
         user_id: {
             type: 'ObjectId'
         },
-        location: [{
+        location: {
             lat: Number,
             lng: Number
-        }],
+        },
         phone: {
             type: String,
             trim: true,
@@ -80,7 +79,7 @@ var RideSchema = new Schema({
         },
         amount: { //greater than or equal to 0
             type: Number,
-            default: '0.00',
+            default: 0.0,
             validate: [validateCost, 'Cost cannot be below 0.00']
         },
         accepted: { //possible statuses: yes/no
