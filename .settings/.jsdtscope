@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="app/config/|app/controllers/v1/ride/|app/utils/|app/config/env/|**/*.min.js|**/node_modules/*|**/bower_components/*|app/config/strategies/|test/|app/models/|app/controllers/v1/users/|test/spec/controllers/v1/users/" kind="src" path=""/>
+	<classpathentry excluding="strategies/|**/*.min.js|**/node_modules/*|**/bower_components/*|env/" kind="src" path="app/config"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/config/env"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/config/strategies"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/controllers/v1/ride"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/controllers/v1/users"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/models"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="app/utils"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|spec/controllers/v1/users/|**/bower_components/*" kind="src" path="test"/>
+	<classpathentry excluding="**/*.min.js|**/node_modules/*|**/bower_components/*" kind="src" path="test/spec/controllers/v1/users"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
