@@ -132,12 +132,14 @@ function deleteRequestedRide(req, ret) {
 
 function initRide(req, res) {
     var data = req.body;
+    console.log(data);
+    res.status(200).send({
+       message:'Test Working'
+    });
+}
 
-    var newRide = new Ride();
+function respondToRideRequest(req, res){
 
-    newRide.requester_id = data.requester_id;
-    newRide.destination = data.destination;
-    newRide.current_route = data.current_route;
 }
 
 function checkFriend(req, res) {
@@ -152,6 +154,7 @@ function checkFriend(req, res) {
         if (user) {
             res.status(200).send({
                 message: {
+                    id: user._id,
                     name: user.username,
                     phoneNumber: user.phoneNumber,
                     status: 'KNOWN'
@@ -160,6 +163,7 @@ function checkFriend(req, res) {
         } else {
             res.status(200).send({
                 message: {
+                    id: -1,
                     name: '',
                     phoneNumber: '',
                     status: 'UNKNOWN'
@@ -180,6 +184,7 @@ RideFormationController.prototype = {
     patchRequestedRide: patchRequestedRide,
     deleteRequestedRide: deleteRequestedRide,
     checkFriend: checkFriend,
+    respondToRideRequest: respondToRideRequest,
     coreSockets: coreSockets
 };
 
