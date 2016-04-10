@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "routes":[
     {
       "post_setup":"true",
@@ -47,81 +46,4 @@
       "controller": "../controllers/v1/ride/ride.communication.server.controller.js"
     }
   ]
-=======
-    "routes": [
-        {
-            "post_setup": "true",
-            "action": "loadApp",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "post_setup": "true",
-            "action": "coreSockets",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/init",
-            "method": "POST",
-            "action": "initRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/checkFriend",
-            "method": "POST",
-            "action": "checkFriend",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/getUberProductLocations",
-            "method": "POST",
-            "action": "getLocalProducts",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/getUberProductById",
-            "method": "POST",
-            "action": "getProductById",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/getUberEstimatedPrice",
-            "method": "POST",
-            "action": "getEstimatedPrice",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/requestUberRide",
-            "method": "POST",
-            "action": "requestRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/getUberRequestedRide",
-            "method": "POST",
-            "action": "getRequestedRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/patchUberRequestedRide",
-            "method": "POST",
-            "action": "patchRequestedRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        },
-        {
-            "route": "/v1/ride/deleteUberRequestedRide",
-            "method": "POST",
-            "action": "deleteRequestedRide",
-            "auth": "true",
-            "controller": "../controllers/v1/ride/ride.server.controller.js"
-        }
-    ]
->>>>>>> c95f802383f14ad72f737e035ba0381b001ebf67
 }
