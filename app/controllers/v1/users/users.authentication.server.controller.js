@@ -80,7 +80,7 @@ function signin(req, res, next) {
 //TODO figure out proper response to cordova
 function signout(req, res, next) {
     req.logout();
-    res.status(200).send({message:'Logout Successfull'});
+    res.status(200).send({message:'Logout Successful'});
 }
 
 function oauthCallback(strategy) {
