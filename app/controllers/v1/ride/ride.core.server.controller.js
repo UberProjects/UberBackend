@@ -8,8 +8,10 @@ var mongoose = require('mongoose');
 var Ride = mongoose.model('Ride');
 var User = mongoose.model('User');
 var passport = require('passport');
+var pushUtil = require('../../../utils/pushUtil.js');
 var uberUtil = require('../../../utils/uberUtil.js');
 var utils = require('../../../utils/utils.js');
+var async = require('async');
 var listeners = {};
 
 function RideFormationController() {
@@ -131,11 +133,52 @@ function deleteRequestedRide(req, ret) {
 }
 
 function initRide(req, res) {
+
     var data = req.body;
-    console.log(data);
-    res.status(200).send({
-       message:'Test Working'
+    var newRide = new Ride();
+
+    newRide.destination.lat = data.destination.lat;
+    newRide.destination.lng = data.destination.lng;
+    newRide.start_location.lat = data.start.latitude;
+    newRide.start_location.lng = data.start.longitude;
+    newRide.socket_io_room  = data.user.room_uuid;
+
+    newRide.ride_users = _.map(data.friends, function(f){
+       return {
+           user_id: f.id,
+           location:{
+              lat: 0.0,
+              lng: 0.0
+           },
+           phone: f.phoneNumber,
+           paid: false,
+           amount: 0.0,
+           accepted:false
+       }
     });
+
+    newRide.save(function(err, rideRet){
+       if( err ){
+           res.status(400).send({
+               message: err
+           });
+       } else {
+            async.map(newRide.ride_users, function(u, cb){
+                User.findById(u.user_id, function(err, user){
+                    cb(null, user.push_token);
+                });
+            }, function(err, ret){
+                console.log(ret);
+
+                pushUtil(ret, rideRet._id, data.user.username);
+
+                res.status(200).send({
+                   message:'Ride created waiting for response from friends'
+                });
+            });
+       }
+    });
+
 }
 
 function respondToRideRequest(req, res){
