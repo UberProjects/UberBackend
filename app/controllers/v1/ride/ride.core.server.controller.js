@@ -17,11 +17,12 @@ var listeners = {};
 function RideFormationController() {
 }
 
+var myIo = {};
 function coreSockets() {
     var socketLoad = this.app.get('socketDeffer');
 
     socketLoad.promise.then(function (io) {
-
+        myIo = io;
         //On connection create and join a new room
         //this will allow for others to join this room
         //providing the socket id will allow for individual communication
@@ -33,6 +34,7 @@ function coreSockets() {
                 room_uuid: newRoomId
             });
         });
+
 
     });
 }
@@ -168,7 +170,6 @@ function initRide(req, res) {
                     cb(null, user.push_token);
                 });
             }, function(err, ret){
-                console.log(ret);
 
                 pushUtil(ret, rideRet._id, data.user.username);
 
@@ -182,7 +183,61 @@ function initRide(req, res) {
 }
 
 function respondToRideRequest(req, res){
+    var data = req.body;
+    /*
+    response: response,
+    location: location,
+    ride_id: ride_id,
+    user: Authentication.user
+    */
+    console.log(data);
+    if(data.response) {
+        Ride.findById(data.ride_id, function (err, ride) {
 
+            ride.ride_users.forEach(function (u) {
+                if (u._id == data.user._id) {
+                    u.accepted = true;
+                    u.location = data.location;
+                }
+            });
+
+            var idx = _.findIndex(ride.ride_users, function(u){ return u.user_id == data.user._id});
+            ride.ride_users[idx].accepted = true;
+            ride.ride_users[idx].location = data.location;
+
+            console.log('Should be updated...');
+            console.log(ride.ride_users);
+
+            ride.save(function (err, savedRide) {
+                if (!err) {
+                    broadCastRideUpdate(ride.socket_io_room, savedRide);
+                    addToRoom(ride.socket_io_room, data.user.socket_id);
+                    res.status(200).send(savedRide);
+                } else {
+                    res.status(400).send(err)
+                }
+            });
+
+        });
+    } else {
+        //TODO update user to delcined
+        res.status(200).send({
+           message:'OK!'
+        });
+    }
+}
+
+function broadCastRideUpdate(room_uuid, updatedRide){
+    console.log('Sending update to: ', room_uuid);
+    myIo.sockets.in(room_uuid).emit('ride_status', updatedRide);
+}
+
+function addToRoom(room_uuid, socket_id){
+    var socket = myIo.sockets.connected[socket_id];
+    if(socket){
+       console.log('Joined!');
+       socket.join(room_uuid);
+    }
 }
 
 function checkFriend(req, res) {

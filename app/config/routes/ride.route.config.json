@@ -18,6 +18,13 @@
             "controller": "../controllers/v1/ride/ride.server.controller.js"
         },
         {
+            "route": "/v1/ride/respondToRideRequest",
+            "method": "POST",
+            "action": "respondToRideRequest",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
             "route": "/v1/ride/checkFriend",
             "method": "POST",
             "action": "checkFriend",
