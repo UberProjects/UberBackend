@@ -59,6 +59,9 @@ var RideSchema = new Schema({
     socket_io_room:{
         type: String
     },
+    uber_ride_id: {
+        type: String
+    },
     ride_users: [{
         user_id: {
             type: 'ObjectId'
@@ -85,6 +88,10 @@ var RideSchema = new Schema({
         accepted: { //possible statuses: yes/no
             type: Boolean,
             default: false
+        },
+        status: {
+            type: String,
+            default: 'waiting'
         }
     }]
 });

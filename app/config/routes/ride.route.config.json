@@ -79,6 +79,20 @@
             "action": "deleteRequestedRide",
             "auth": "true",
             "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/startRide",
+            "method": "POST",
+            "action": "startRide",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
+        },
+        {
+            "route": "/v1/ride/updateUberDestination",
+            "method": "POST",
+            "action": "updateUberDestination",
+            "auth": "true",
+            "controller": "../controllers/v1/ride/ride.server.controller.js"
         }
     ]
 }
