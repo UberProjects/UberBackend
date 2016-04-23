@@ -209,6 +209,7 @@ function startRide(req, ret) {
                             ret.status(400).send({message: err});
                         } else {
                             Ride.findById(rideId, function (err, ride) {
+                                ride.ride_state = 'In Progress';
                                 var first = ride.ride_users.filter(function (friend) {
                                     return friend._id == friends[0]._id;
                                 });
@@ -242,7 +243,6 @@ function startRide(req, ret) {
 function updateUberDestination(req, ret) {
     var data = req.body.data;
     var rideId = data._id;
-
     var friends = data.ride_users;
 
     Ride.findById(rideId, function (err, ride) {
@@ -250,37 +250,50 @@ function updateUberDestination(req, ret) {
             return friend.status == 'next';
         });
 
-        current[0].status = 'picked_up';
-
-        var waiting = ride.ride_users.filter(function (friend) {
-            return friend.status == 'waiting';
-        });
-
-        var next_location = null;
-        if (waiting.length != 0) {
-            next_location = waiting[0].location;
-            next_location.long = next_location.lng;
-            waiting[0].status = 'next';
-        } else {
-            next_location = ride.destination;
-            next_location.long = next_location.lng;
-        }
-
-        User.findOne({_id: req.body.user._id}, function (err, user) {
-            uberUtil.patchRequestedRide(ride.uber_ride_id, next_location, user.uber_access.access_token, function (err, res) {
-                if (err) {
-                    ret.status(400).send({message: err});
+        if (current.length == 0) {
+            // The ride is done
+            ride.ride_state = 'Completed';
+            ride.save(function (err, savedRide) {
+                if (!err) {
+                    ret.status(200).send({message: {ride: savedRide}});
                 } else {
-                    ride.save(function (err, savedRide) {
-                        if (!err) {
-                            ret.status(200).send({message: {ride: savedRide, uber_ride: res}});
-                        } else {
-                            ret.status(400).send({message: err});
-                        }
-                    });
+                    ret.status(400).send({message: err});
                 }
+            })
+        } else {
+
+            current[0].status = 'picked_up';
+
+            var waiting = ride.ride_users.filter(function (friend) {
+                return friend.status == 'waiting';
             });
-        });
+
+            var next_location = null;
+            if (waiting.length != 0) {
+                next_location = waiting[0].location;
+                next_location.long = next_location.lng;
+                waiting[0].status = 'next';
+            } else {
+                next_location = ride.destination;
+                next_location.long = next_location.lng;
+            }
+
+            User.findOne({_id: req.body.user._id}, function (err, user) {
+                uberUtil.patchRequestedRide(ride.uber_ride_id, next_location, user.uber_access.access_token, function (err, res) {
+                    if (err) {
+                        ret.status(400).send({message: err});
+                    } else {
+                        ride.save(function (err, savedRide) {
+                            if (!err) {
+                                ret.status(200).send({message: {ride: savedRide, uber_ride: res}});
+                            } else {
+                                ret.status(400).send({message: err});
+                            }
+                        });
+                    }
+                });
+            });
+        }
 
     });
 }
