@@ -20,7 +20,7 @@ function signup(req, res, next) {
     var saveUser = function(err, access_token, refresh_token) {
         var user_params = req.body;
         if (err) {
-            console.log(error);
+            console.log(err);
         } else {
             user_params.uber_access = {access_token: access_token, refresh_token: refresh_token};
         }

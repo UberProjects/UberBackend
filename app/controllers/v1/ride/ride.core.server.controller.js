@@ -185,58 +185,60 @@ function initRide(req, res) {
 function startRide(req, ret) {
     var data = req.body.data;
     var rideId = data._id;
-
-    var friends = data.ride_users;
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@');
     console.log(data);
-    if (friends.length > 1) {
-        var start_location = friends[0].location;
-        // hacky but don't want to find all the usages of long right now
-        start_location.long = start_location.lng;
-        var end_location = friends[1].location;
-        end_location.long = end_location.lng;
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@');
 
-        //Need to update that the current user is being picked up and who the next one is
+    var start_location = data.start_location;
+    // hacky but don't want to find all the usages of long right now
+    start_location.long = start_location.lng;
+    var end_location = null;
+    var nextUserId = null;
+    if (data.ride_users.length != 0) {
+        end_location = data.ride_users[0].location;
+        nextUserId = data.ride_users[0].user_id;
+    } else {
+        end_location = data.destination;
+    }
+    end_location.long = end_location.lng;
 
-        User.findOne({_id: req.body.user._id}, function (err, user) {
-            uberUtil.requestRide(start_location, end_location, req.body.product_id, user.uber_access.access_token, function (err, res) {
-                if (err) {
-                    ret.status(400).send({message: err});
-                } else {
-                    var request_id = res.request_id;
-                    // This is required while using the sandbox API
-                    uberUtil.acceptRequestedRide(request_id, function (err, accept_res) {
-                        if (err) {
-                            ret.status(400).send({message: err});
-                        } else {
-                            Ride.findById(rideId, function (err, ride) {
-                                ride.ride_state = 'In Progress';
-                                var first = ride.ride_users.filter(function (friend) {
-                                    return friend._id == friends[0]._id;
-                                });
-                                first[0].status = 'picked_up';
+    //Need to update that the current user is being picked up and who the next one is
 
+    User.findOne({_id: req.body.user._id}, function (err, user) {
+        uberUtil.requestRide(start_location, end_location, req.body.product_id, user.uber_access.access_token, function (err, res) {
+            if (err) {
+                ret.status(400).send({message: err});
+            } else {
+                var request_id = res.request_id;
+                // This is required while using the sandbox API
+                uberUtil.acceptRequestedRide(request_id, function (err, accept_res) {
+                    if (err) {
+                        ret.status(400).send({message: err});
+                    } else {
+                        Ride.findById(rideId, function (err, ride) {
+                            ride.ride_state = 'In Progress';
+                            if (nextUserId) {
                                 var next = ride.ride_users.filter(function (friend) {
-                                    return friend._id == friends[1]._id;
+                                    return friend.user_id == nextUserId;
                                 });
                                 next[0].status = 'next';
+                            }
 
-                                ride.uber_ride_id = request_id;
-                                ride.save(function (err, savedRide) {
-                                    if (!err) {
-                                        ret.status(200).send({message: {ride: res, ride_data: savedRide}});
-                                    } else {
-                                        ret.status(400).send({message: err});
-                                    }
-                                })
-                            });
+                            ride.uber_ride_id = request_id;
+                            ride.save(function (err, savedRide) {
+                                if (!err) {
+                                    ret.status(200).send({message: {ride: res, ride_data: savedRide}});
+                                } else {
+                                    ret.status(400).send({message: err});
+                                }
+                            })
+                        });
 
-                        }
-                    });
-                }
-            });
+                    }
+                });
+            }
         });
-    }
-
+    });
     console.log(data);
 }
 
