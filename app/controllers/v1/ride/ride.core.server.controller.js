@@ -227,6 +227,7 @@ function startRide(req, ret) {
                             ride.uber_ride_id = request_id;
                             ride.save(function (err, savedRide) {
                                 if (!err) {
+                                    broadCastRideUpdate(ride.socket_io_room, savedRide);
                                     ret.status(200).send({message: {ride: res, ride_data: savedRide}});
                                 } else {
                                     ret.status(400).send({message: err});
@@ -257,6 +258,7 @@ function updateUberDestination(req, ret) {
             ride.ride_state = 'Completed';
             ride.save(function (err, savedRide) {
                 if (!err) {
+                    broadCastRideUpdate(ride.socket_io_room, savedRide);
                     ret.status(200).send({message: {ride: savedRide}});
                 } else {
                     ret.status(400).send({message: err});
@@ -287,6 +289,7 @@ function updateUberDestination(req, ret) {
                     } else {
                         ride.save(function (err, savedRide) {
                             if (!err) {
+                                broadCastRideUpdate(ride.socket_io_room, savedRide);
                                 ret.status(200).send({message: {ride: savedRide, uber_ride: res}});
                             } else {
                                 ret.status(400).send({message: err});
